@@ -7,12 +7,16 @@ import pandas as pd
 
 from gitingest import ingest
 
-from llama_index.core import Settings
-from llama_index.llms.ollama import Ollama
-from llama_index.core import PromptTemplate
-from llama_index.embeddings.huggingface import HuggingFaceEmbedding
-from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
-from llama_index.core.node_parser import MarkdownNodeParser
+from llama_index import (
+    ServiceContext,
+    VectorStoreIndex,
+    SimpleDirectoryReader,
+    PromptTemplate,
+    MarkdownNodeParser
+)
+from llama_index.llms import Ollama
+from llama_index.embeddings.langchain import LangchainEmbedding
+from langchain.embeddings.huggingface import HuggingFaceEmbeddings
 
 import streamlit as st
 
@@ -41,7 +45,7 @@ def process_with_gitingets(github_url):
 
 with st.sidebar:
     st.header(f"Add your GitHub repository!")
-    
+
     github_url = st.text_input("Enter GitHub repository URL", placeholder="GitHub URL")
     load_repo = st.button("Load Repository")
 
@@ -51,7 +55,7 @@ with st.sidebar:
                 st.write("Processing your repository...")
                 repo_name = github_url.split('/')[-1]
                 file_key = f"{session_id}-{repo_name}"
-                
+
                 if file_key not in st.session_state.get('file_cache', {}):
 
                     if os.path.exists(temp_dir):
@@ -68,10 +72,10 @@ with st.sidebar:
                         loader = SimpleDirectoryReader(
                             input_dir=temp_dir,
                         )
-                    else:    
+                    else:
                         st.error('Could not find the file you uploaded, please check again...')
                         st.stop()
-                    
+
                     docs = loader.load_data()
 
                     # setup llm & embedding model
@@ -101,7 +105,7 @@ with st.sidebar:
                     query_engine.update_prompts(
                         {"response_synthesizer:text_qa_template": qa_prompt_tmpl}
                     )
-                    
+
                     st.session_state.file_cache[file_key] = query_engine
                 else:
                     query_engine = st.session_state.file_cache[file_key]
@@ -110,7 +114,7 @@ with st.sidebar:
                 st.success("Ready to Chat!")
         except Exception as e:
             st.error(f"An error occurred: {e}")
-            st.stop()     
+            st.stop()
 
 col1, col2 = st.columns([6, 1])
 
@@ -143,22 +147,22 @@ if prompt := st.chat_input("What's up?"):
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
         full_response = ""
-        
+
         try:
             # Get the repo name from the GitHub URL
             repo_name = github_url.split('/')[-1]
             file_key = f"{session_id}-{repo_name}"
-            
+
             # Get query engine from session state
             query_engine = st.session_state.file_cache.get(file_key)
-            
+
             if query_engine is None:
                 st.error("Please load a repository first!")
                 st.stop()
-                
+
             # Use the query engine
             response = query_engine.query(prompt)
-            
+
             # Handle streaming response
             if hasattr(response, 'response_gen'):
                 for chunk in response.response_gen:

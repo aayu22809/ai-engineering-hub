@@ -1,0 +1,6 @@
+gitingest
+llama-index
+tranformers
+sentence-transformers
+langchain
+streamlit
