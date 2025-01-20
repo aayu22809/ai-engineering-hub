@@ -1,13 +1,20 @@
-# AI Engineering Hub 🚀
-Welcome to the **AI Engineering Hub**!
 
-## 🌟 Why This Repo?
-AI Engineering is advancing rapidly, and staying at the forefront requires both deep understanding and hands-on experience. Here, you will find:
-- In-depth tutorials on **LLMs and RAGs**
-- Real-world **AI agent** applications
-- Examples to implement, adapt, and scale in your projects
+# 100% local RAG app to chat with GitHub!
 
-Whether you’re a beginner, practitioner, or researcher, this repo provides resources for all skill levels to experiment and succeed in AI engineering.
+This project leverages GitIngest to parse a GitHub repo in markdown format and the use LlamaIndex for RAG orchestration over it.
+
+
+## Installation and setup
+
+**Install Dependencies**:
+   Ensure you have Python 3.11 or later installed.
+   ```bash
+   pip install gitingest llama-index llama-index-llms-ollama llama-index-agent-openai llama-index-llms-openai --upgrade --quiet
+   ```
+
+**Running**:
+
+Make sure you have Ollama Server running then you can run following command to start the streamlit application ```streamlit run app_local.py```.
 
 ---
 
@@ -18,18 +25,6 @@ Whether you’re a beginner, practitioner, or researcher, this repo provides res
 
 ---
 
-## 📢 Contribute to the AI Engineering Hub!
-We welcome contributors! Whether you want to add new tutorials, improve existing code, or report issues, your contributions make this community thrive. Here’s how to get involved:
-1. **Fork** the repository.
-2. Create a new branch for your contribution.
-3. Submit a **Pull Request** and describe the improvements.
+## Contribution
 
----
-
-## 📜 License
-This repository is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 💬 Connect
-For discussions, suggestions, and more, feel free to [create an issue](https://github.com/patchy631/ai-engineering/issues) or reach out directly!
-
-Happy Coding! 🎉
+Contributions are welcome! Please fork the repository and submit a pull request with your improvements.
