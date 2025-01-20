@@ -1,6 +1,7 @@
+python == 3.10
 gitingest
 llama-index
-tranformers
+transformers
 sentence-transformers
 langchain
 streamlit
